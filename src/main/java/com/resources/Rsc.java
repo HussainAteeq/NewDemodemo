@@ -10,6 +10,8 @@ import javax.ws.rs.core.Response;
 
 @Path("/hello-world")
 public class Rsc {
+
+
     @GET
     public String hello() {
         return "Hello, World!";
@@ -28,26 +30,49 @@ public class Rsc {
 
     @POST
     @Path("/PostTest")
-    public Response postJSON(String payload) throws Exception
+    public Response post(String payload) throws Exception
     {
-        final Student emp=new Gson().fromJson(payload,Student.class);
-        System.out.println(emp.toString());
-        //return Response.noContent().build();
-        return Response.ok(emp.toString()).build();
+        try {
+            final Student obj = new Gson().fromJson(payload, Student.class);
+            System.out.println(obj.toString());
+            //return Response.noContent().build();
+            if (obj.getName() == null || obj.getRoll_No() == null || obj.getCity() == null) {
+                throw new Exception();
+            }
+        }catch (Exception e)
+            {
+                return Response.status(400).entity("Error").build();
+            }
+        return Response.ok(200).build();
     }
+
+    @POST
+    @Path("/Logininfo")
+    public Response login(@QueryParam("StID") String Id, @QueryParam("password") String pass)
+    {
+
+        Student obj = new Student();
+        if (Id.equals(obj.StID) && pass.equals(obj.password)) {
+            System.out.println("Success");
+            return Response.status(200).entity("success").build();
+        }
+
+        else {
+            System.out.println("Error");
+            return Response.status(401).entity("error").build();
+        }
+    }
+
 
     @PUT
     @Path("/JSON")
 //    @Produces("")
     public Response putJSON(@QueryParam("name") String name)
     {
-        //@PathParam("id") String id;
-        Student obj = new Student("Hussain", "BITF19A523", "LHR");
-        obj.setName(name);
+        Student obj = new Student();
+
+            obj.setName(name);
         return Response.ok(obj.toString()).build();
     }
-
-
-
 
 }

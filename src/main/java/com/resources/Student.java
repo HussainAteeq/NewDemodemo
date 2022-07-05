@@ -10,15 +10,19 @@ public class Student {
                 '}';
     }
 
-    public Student(String name, String roll_No, String city) {
+    /**public Student(String name, String roll_No, String city) {
         this.name = name;
         this.roll_No = roll_No;
         this.city = city;
-    }
+    }**/
 
     String name;
     String roll_No;
     String city;
+
+    int no;
+    public String password = "St1234";
+    public String StID = "Hussain";
 
     public String getName() {
         return name;
